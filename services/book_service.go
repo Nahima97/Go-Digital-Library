@@ -20,15 +20,15 @@ func (s *BookService) BorrowBook(userID, bookID uint) error {
         return errors.New("user not found")
     }
 
-    // 2. Check if user is old enough (16+)
-    if user.Age < 16 {
-        return errors.New("user must be at least 16 years old to borrow books")
-    }
-
-    // 3. Get the book
+    // 2. Get the book
     book, err := s.BookRepo.GetBookByID(bookID)
     if err != nil {
         return errors.New("book not found")
+    }
+
+	// 3. Check if user is old enough 
+    if user.Age < book.AgeRating {
+        return errors.New("user must be old enough to read books")
     }
 
     // 4. Check if the user already borrowed the book
