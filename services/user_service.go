@@ -31,7 +31,7 @@ func (s *UserService) RegisterUser(req *models.User) error {
 	req.ID = myuuid
 	
 
-	//put into the database
+	//put the users into the database
 	err = s.Repo.CreateUser(req)
 	if err != nil {
 		return err
