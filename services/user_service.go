@@ -22,7 +22,7 @@ func (s *UserService) RegisterUser(req *models.User) error {
 
 	//hashing the password
 	hashedPass, err := utils.HashPassword(req.Password)
-	if err == nil {
+	if err != nil {
 		return err
 	}
 	req.Password = hashedPass
