@@ -1,7 +1,48 @@
 package services
 
-import "library/repository"
+import (
+    "errors"
+    "go-digital/models"
+    "go-digital/repository"
+    "gorm.io/gorm"
+)
 
 type BookService struct {
-	Repo repository.BookRepository
+    UserRepo repository.UserRepository
+    BookRepo repository.BookRepository
+    Db       *gorm.DB // Required to use GORM's association features
 }
+
+func (s *BookService) BorrowBook(userID, bookID uint) error {
+    // 1. Get the user
+    user, err := s.UserRepo.GetUserByID(userID)
+    if err != nil {
+        return errors.New("user not found")
+    }
+
+    // 2. Check if user is old enough (16+)
+    if user.Age < 16 {
+        return errors.New("user must be at least 16 years old to borrow books")
+    }
+
+    // 3. Get the book
+    book, err := s.BookRepo.GetBookByID(bookID)
+    if err != nil {
+        return errors.New("book not found")
+    }
+
+    // 4. Check if the user already borrowed the book
+    for _, b := range user.BorrowedBooks {
+        if b.ID == book.ID {
+            return errors.New("you have already borrowed this book")
+        }
+    }
+
+    // 5. Append the book to user's BorrowedBooks (many-to-many link)
+    if err := s.Db.Model(user).Association("BorrowedBooks").Append(book); err != nil {
+        return errors.New("failed to borrow book")
+    }
+
+    return nil
+}
+
