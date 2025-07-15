@@ -1,7 +1,7 @@
 package utils
 
 
-
+//qasim - bcrypt
 func HashPassword () {
 
 

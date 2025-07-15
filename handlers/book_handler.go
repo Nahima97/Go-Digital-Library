@@ -10,7 +10,7 @@ type BookHandler struct {
 func () SearchBook() {
 //all - guests, users
 
-
+//joshua and pana
 }
 
 func () BorrowBook() {
@@ -18,22 +18,27 @@ func () BorrowBook() {
 //check if user is old enough
 //delete from the users slice of books 
 
+//nahima, alina, safa
 }
 
 func () ReturnBook() {
 //users
 //append the users slice of books 
 
+
+//nahima, alina, safa
 }
 
 func () AddBook() {
 //only admin 
 
 
+//nahima, alina, safa
 }
 
 func () DeleteBook() {
 //only admin
 
 
+//nahima, alina, safa
 }
