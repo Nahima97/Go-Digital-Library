@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"library/models"
 	"library/services"
 	"net/http"
@@ -13,7 +14,6 @@ type UserHandler struct {
 
 func () Register() {
 
-//pana and joshua 
 
 }
 
@@ -33,7 +33,4 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(token)
-}
-
-	
 }

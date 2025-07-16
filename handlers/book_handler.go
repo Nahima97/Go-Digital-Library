@@ -1,6 +1,12 @@
 package handlers
 
-import "library/services"
+import (
+	"library/services"
+	"net/http"
+	"strings"
+
+	"github.com/google/uuid"
+)
 
 type BookHandler struct {
 	Service *services.BookService
@@ -21,12 +27,24 @@ func () BorrowBook() {
 //nahima, alina, safa
 }
 
-func () ReturnBook() {
-//users
-//append the users slice of books 
+func (h *BookHandler) ReturnBook(w http.ResponseWriter, r *http.Request) {
+ userID, err := utils.ExtractUserID(r)
+    if err != nil {
+        http.Error(w, "Unauthorized", http.StatusUnauthorized)
+        return
+    }
+	
+bookID := strings.TrimPrefix(r.URL.Path, "/return/:")
 
+bookUUID, _ := uuid.Parse(bookID)
+	
+      err = h.Service.ReturnBook(uuid.UUID(userID), uuid.UUID(bookUUID))
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
 
-//nahima, alina, safa
+w.WriteHeader(http.StatusOK)
 }
 
 func () AddBook() {

@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// nahima, alina, and sulema
 func GenerateJWT() {
 
 }
@@ -43,9 +41,5 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
-
-}
-
-func GetUserbyUserID() {
 
 }
