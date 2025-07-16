@@ -5,8 +5,7 @@ import (
 	"library/models"
 	"library/repository"
 	"net/http"
-
-	"github.com/gofrs/uuid"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -15,7 +14,7 @@ type BookService struct {
 }
 
 func (s *BookService) AddBook(book models.Book) (models.Book, int, error) {
-	// Basic validation
+
 	if book.Title == "" || book.Author == "" {
 		return models.Book{}, http.StatusBadRequest, errors.New("title and author are required")
 	}
