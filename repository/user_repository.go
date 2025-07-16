@@ -2,6 +2,7 @@ package repository
 
 import (
 	"library/models"
+	"library/db"
 )
 
 type UserRepository interface {

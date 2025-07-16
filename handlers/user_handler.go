@@ -12,7 +12,6 @@ type UserHandler struct {
 	Service *services.UserService
 }
 
-
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 	//the collection of request details
@@ -38,6 +37,6 @@ func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 func () Login() {
 
-
+	
 	
 }
