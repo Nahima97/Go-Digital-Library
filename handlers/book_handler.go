@@ -63,8 +63,33 @@ func () AddBook() {
 
 }
 
-func () DeleteBook() {
-//only admin
+func (h *BookHandler) DeleteBook(w http.ResponseWriter, r *http.Request) {
+    userID, err := utils.ExtractUserID(r)
+    if err != nil {
+        http.Error(w, "Unauthorized", http.StatusUnauthorized)
+        return
+    }
 
+    bookIDStr := r.URL.Query().Get("id")
+    if bookIDStr == "" {
+        http.Error(w, "Missing book ID", http.StatusBadRequest)
+        return
+    }
 
+    bookID, err := strconv.Atoi(bookIDStr)
+    if err != nil {
+        http.Error(w, "Invalid book ID", http.StatusBadRequest)
+        return
+    }
+
+    err = h.Service.DeleteBook(uint(userID), uint(bookID))
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusForbidden)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(map[string]string{
+        "message": "Book deleted successfully",
+    })
 }

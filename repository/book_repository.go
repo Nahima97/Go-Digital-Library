@@ -8,6 +8,8 @@ import (
 // Interface for book-related DB operations
 type BookRepository interface {
     GetBookByID(id uint) (*models.Book, error)
+    DeleteBookByID(id uint) error
+
 }
 
 // Struct that implements the interface
@@ -23,4 +25,8 @@ func (r *BookRepo) GetBookByID(id uint) (*models.Book, error) {
         return nil, err
     }
     return &book, nil
+}
+
+func (r *BookRepo) DeleteBookByID(id uint) error {
+    return r.Db.Delete(&models.Book{}, id).Error
 }

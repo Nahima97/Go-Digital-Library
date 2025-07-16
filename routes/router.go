@@ -12,5 +12,8 @@ func SetupRouter(userHandler *handlers.UserHandler, bookHandler *handlers.BookHa
 	// Route for borrowing a book
 	r.HandleFunc("/borrow", bookHandler.BorrowBook).Methods("POST")
 
+	// Route for deleting a book
+	r.HandleFunc("/delete", bookHandler.DeleteBook).Methods("DELETE")
+
 	return r
 }
