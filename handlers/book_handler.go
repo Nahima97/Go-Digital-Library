@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"library/db"
 	"library/models"
 	"library/services"
 	"net/http"
@@ -11,7 +12,7 @@ type BookHandler struct {
 	Service *services.BookService
 }
 
-func  SearchBook() {
+func SearchBook() {
 	//all - guests, users
 
 }
@@ -29,9 +30,9 @@ func ReturnBook() {
 
 }
 
-func AddBook(w http.ResponseWriter, r *http.Request) {
-	// only admin
-	userClaims := r.Context().Value(middleware.UserKey).(*Claims)
+func (h *BookHandler) AddBook(w http.ResponseWriter, r *http.Request) {
+	
+	userClaims := r.Context().Value(middleware.UserKey).(*services.Claims)
 
 	if !userClaims.IsAdmin {
 		http.Error(w, "Access denied: admin only", http.StatusForbidden)
@@ -43,10 +44,15 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	database.DB.Add(&book)
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(book)
 
+	addedBook, status, err := h.Service.AddBook(book)
+	if err != nil {
+		http.Error(w, err.Error(), status)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(addedBook)
 }
 
 func DeleteBook() {
