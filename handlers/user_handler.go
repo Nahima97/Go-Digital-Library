@@ -12,7 +12,6 @@ type UserHandler struct {
 }
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
-
 	//the collection of request details
 	var signUp models.User
 	err := json.NewDecoder(r.Body).Decode(&signUp)
@@ -20,6 +19,7 @@ func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
 
 	//calling the service layer
 	err = h.Service.RegisterUser(&signUp)
