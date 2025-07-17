@@ -12,8 +12,8 @@ type BookHandler struct {
 	Service *services.BookService
 }
 
-func SearchBook() {
-	//all - guests, users
+func () SearchBook() {
+//all - guests, users
 
 }
 
