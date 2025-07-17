@@ -16,5 +16,8 @@ require (
 	golang.org/x/text v0.27.0 // indirect
 	gorm.io/driver/postgres v1.6.0 // indirect
 	gorm.io/gorm v1.30.0 // indirect
+  require github.com/golang-jwt/jwt/v5 v5.2.3 // indirect
+
 )
+
 

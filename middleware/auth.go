@@ -1,6 +1,9 @@
 package middleware
 
 import (
+	//"library/middleware"
+	"os"
+	"time"
 	"fmt"
 	"net/http"
 	"strings"
@@ -8,10 +11,34 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateJWT() {
-
+type Claims struct {
+    UserID  uint `json:"user_id"`
+    IsAdmin bool `json:"is_admin"`
+    //StandardClaims
 }
 
+func GenerateJWT() {
+var secret = os.Getenv("JWT_SECRET")
+
+
+func GenerateJWT(userID string) (string,error) {
+
+ claims := &jwt.MapClaims{
+	 "userID": userID,
+ "exp":time.Now().Add(24 * time.Hour).Unix(),
+ }
+
+token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+tokenString,err := token.SignedString(secret)
+if err != nil{
+	return "", err
+}
+return tokenString, nil
+	
+}
+
+
+  
 func VerifyJWT(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -43,3 +70,4 @@ func AuthMiddleware(next http.Handler) http.Handler {
 	})
 
 }
+
