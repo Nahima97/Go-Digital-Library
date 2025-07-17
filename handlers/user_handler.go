@@ -11,7 +11,6 @@ type UserHandler struct {
 	Service *services.UserService
 }
 
-
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 	//the collection of request details
@@ -53,4 +52,5 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(token)
+
 }

@@ -49,11 +49,10 @@ func (s *UserService) RegisterUser(req *models.User) error {
 	}
 	req.Password = hashedPass
 
-	myuuid := uuid.NewString()
+	myuuid := uuid.New()
 	req.ID = myuuid
-	
 
-	//put into the database
+	//put the users into the database
 	err = s.Repo.CreateUser(req)
 	if err != nil {
 		return err
