@@ -9,6 +9,7 @@ import (
 // Interface for book-related DB operations
 type BookRepository interface {
     GetBookByID(id uint) (*models.Book, error)
+    DeleteBookByID(id uint) error
   	CreateBook(book models.Book) error
 
 }
@@ -27,6 +28,10 @@ func (r *BookRepo) GetBookByID(id uint) (*models.Book, error) {
     }
     return &book, nil
 }
+
+
+func (r *BookRepo) DeleteBookByID(id uint) error {
+    return r.Db.Delete(&models.Book{}, id).Error
 
 func (r BookRepo) SearchBooks(title, author, genre string) ([]models.Book, error) {
     var books []models.Book
@@ -84,9 +89,6 @@ func (r BookRepo) SearchBooks(title, author, genre string) ([]models.Book, error
 // 	return &book, nil
 // }
 
-type bookRepo struct {
-	db *gorm.DB
-}
 
 // GetBookByTitle fetches a book by title
 func (r *bookRepo) GetBookByTitle(title string) (models.Book, error) {
@@ -98,4 +100,5 @@ func (r *bookRepo) GetBookByTitle(title string) (models.Book, error) {
 // CreateBook adds a new book
 func (r *bookRepo) CreateBook(book models.Book) error {
 	return r.db.Create(&book).Error
+
 }
