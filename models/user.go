@@ -1,7 +1,6 @@
 package models
 
 import (
-	"library/models"
 
 	"github.com/google/uuid"
 )

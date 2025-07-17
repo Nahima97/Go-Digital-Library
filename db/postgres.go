@@ -13,7 +13,7 @@ import (
 
 var Db *gorm.DB
 
-func InitDb() {
+func InitDb() *gorm.DB {
 
 	var err error
 
@@ -40,4 +40,5 @@ func InitDb() {
 	if err != nil {
 		log.Fatal("unable to migrate schema", err)
 	}
+	return Db
 }

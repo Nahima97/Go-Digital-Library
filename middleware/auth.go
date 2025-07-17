@@ -17,14 +17,15 @@ type Claims struct {
     //StandardClaims
 }
 
-func GenerateJWT() {
+
 var secret = os.Getenv("JWT_SECRET")
 
 
-func GenerateJWT(userID string) (string,error) {
+func GenerateJWT(userID, userRole string) (string,error) {
 
  claims := &jwt.MapClaims{
 	 "userID": userID,
+	 "user_role": userRole,
  "exp":time.Now().Add(24 * time.Hour).Unix(),
  }
 
@@ -36,7 +37,6 @@ if err != nil{
 return tokenString, nil
 	
 }
-
 
   
 func VerifyJWT(tokenString string) (*jwt.Token, error) {

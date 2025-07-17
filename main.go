@@ -13,13 +13,13 @@ import (
 
 func main() {
 
-	db.InitDb()
+	Db := db.InitDb()
 
-	userRepo := &repository.UserRepo{}
-	bookRepo := &repository.BookRepo{}
+	userRepo := &repository.UserRepo{Db: Db}
+	bookRepo := &repository.BookRepo{Db: Db}
 
 	userService := &services.UserService{Repo: userRepo}
-	bookService := &services.BookService{Repo: bookRepo}
+	bookService := &services.BookService{BookRepo: bookRepo}
 
 	userHandler := &handlers.UserHandler{Service: userService}
 	bookHandler := &handlers.BookHandler{Service: bookService}

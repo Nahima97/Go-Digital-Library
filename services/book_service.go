@@ -16,7 +16,7 @@ type BookService struct {
 	Db       *gorm.DB // Required to use GORM's association features
 }
 
-func (s *BookService) BorrowBook(userID, bookID uint) error {
+func (s *BookService) BorrowBook(userID, bookID uuid.UUID) error {
 	// 1. Get the user
 	user, err := s.UserRepo.GetUserByID(userID)
 	if err != nil {
@@ -49,7 +49,7 @@ func (s *BookService) BorrowBook(userID, bookID uint) error {
 	return nil
 }
 
-func (s *BookService) DeleteBook(userID, bookID uint) error {
+func (s *BookService) DeleteBook(userID, bookID uuid.UUID) error {
     user, err := s.UserRepo.GetUserByID(userID)
     if err != nil {
         return errors.New("user not found")
@@ -94,7 +94,7 @@ func (s *BookService) AddBook(book models.Book) (models.Book, int, error) {
 		return models.Book{}, http.StatusBadRequest, errors.New("title and author are required")
 	}
 
-	existingBook, err := s.Repo.GetBookByTitle(book.Title)
+	existingBook, err := s.BookRepo.GetBookByTitle(book.Title)
 	if err == nil && existingBook.ID != uuid.Nil {
 		return models.Book{}, http.StatusBadRequest, errors.New("book already exists")
 	}
@@ -106,7 +106,7 @@ func (s *BookService) AddBook(book models.Book) (models.Book, int, error) {
 	book.ID = uuid.New()
 
 	// Create book
-	if err := s.Repo.CreateBook(book); err != nil {
+	if err := s.BookRepo.CreateBook(book); err != nil {
 		return models.Book{}, http.StatusInternalServerError, errors.New("could not add book")
 	}
 
@@ -115,37 +115,10 @@ func (s *BookService) AddBook(book models.Book) (models.Book, int, error) {
 
 func (s *BookService) SearchBooks(title, author, genre string) ([]models.Book, error) {
 
-	books, err := s.Repo.SearchBooks(title, author, genre)
+	books, err := s.BookRepo.SearchBooks(title, author, genre)
     if err != nil {
         return nil, err
     }
     return books, nil
 	
 }
-
-
-// func (s *BookService) SearchTitle(req *models.Book) error {
-// 	_, err := s.Repo.SearchTitle(req.Title)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil 
-// }
-
-// func (s *BookService) SearchAuthor(req *models.Book) error {
-// 	_, err := s.Repo.SearchAuthor(req.Author)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil 
-// }
-
-// func (s *BookService) SearchGenre(req *models.Book) error {
-// 	_, err := s.Repo.SearchGenre(req.Genre)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil 
-// }
-
-
