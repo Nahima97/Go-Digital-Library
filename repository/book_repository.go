@@ -32,6 +32,7 @@ func (r *BookRepo) GetBookByID(id uint) (*models.Book, error) {
 
 func (r *BookRepo) DeleteBookByID(id uint) error {
     return r.Db.Delete(&models.Book{}, id).Error
+}
 
 func (r BookRepo) SearchBooks(title, author, genre string) ([]models.Book, error) {
     var books []models.Book
@@ -91,14 +92,14 @@ func (r BookRepo) SearchBooks(title, author, genre string) ([]models.Book, error
 
 
 // GetBookByTitle fetches a book by title
-func (r *bookRepo) GetBookByTitle(title string) (models.Book, error) {
+func (r *BookRepo) GetBookByTitle(title string) (models.Book, error) {
 	var book models.Book
 	err := r.db.Where("title = ?", title).First(&book).Error
 	return book, err
 }
 
 // CreateBook adds a new book
-func (r *bookRepo) CreateBook(book models.Book) error {
+func (r *BookRepo) CreateBook(book models.Book) error {
 	return r.db.Create(&book).Error
 
 }

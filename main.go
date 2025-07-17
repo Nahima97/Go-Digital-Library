@@ -19,7 +19,7 @@ func main() {
 	bookRepo := &repository.BookRepo{}
 
 	userService := &services.UserService{Repo: userRepo}
-	bookService := &services.BookService{Repo: bookRepo}
+	bookService := &services.BookService{BookRepo: bookRepo}
 
 	userHandler := &handlers.UserHandler{Service: userService}
 	bookHandler := &handlers.BookHandler{Service: bookService}
