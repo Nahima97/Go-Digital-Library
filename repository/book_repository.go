@@ -1,25 +1,32 @@
 package repository
 
-import	(		 
-	"library/models"	
-	"library/db"
-
-	"gorm.io/gorm"
-
+import (
+    "go-digital/models"
+    "gorm.io/gorm"
+  	"library/db"
 )
 
+// Interface for book-related DB operations
 type BookRepository interface {
-	GetBookByTitle(title string) (models.Book, error)
-	CreateBook(book models.Book) error
+    GetBookByID(id uint) (*models.Book, error)
+  	CreateBook(book models.Book) error
+
 }
 
-
-SearchBooks(title, author, genre string) ([]models.Book, error)
-	
+// Struct that implements the interface
+type BookRepo struct {
+    Db *gorm.DB
 }
 
-
-type BookRepo struct {}
+// GetBookByID fetches a book by ID
+func (r *BookRepo) GetBookByID(id uint) (*models.Book, error) {
+    var book models.Book
+    // Preload users if you need to show who borrowed it (optional)
+    if err := r.Db.First(&book, id).Error; err != nil {
+        return nil, err
+    }
+    return &book, nil
+}
 
 func (r BookRepo) SearchBooks(title, author, genre string) ([]models.Book, error) {
     var books []models.Book
@@ -92,4 +99,3 @@ func (r *bookRepo) GetBookByTitle(title string) (models.Book, error) {
 func (r *bookRepo) CreateBook(book models.Book) error {
 	return r.db.Create(&book).Error
 }
-
