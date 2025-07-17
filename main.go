@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"library/db"
 	"library/handlers"
 	"library/repository"
 	"library/routes"
 	"library/services"
+	"log"
+	"net/http"
 )
 
 func main() {
@@ -23,6 +26,9 @@ func main() {
 
 	r := routes.SetupRouter(userHandler, bookHandler)
 
-	//start server
-
+	err := http.ListenAndServe(":8080", r)
+	if err != nil {
+		log.Fatal("failed to start server", err)
+	}
+	fmt.Println("server started!")
 }
