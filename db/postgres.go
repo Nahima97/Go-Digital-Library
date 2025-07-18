@@ -30,7 +30,7 @@ func InitDb() *gorm.DB {
 		os.Getenv("DB_PORT"),
 	)
 
-	Db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
+	Db, err = gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}

@@ -30,7 +30,7 @@ func GenerateJWT(userID, userRole string) (string,error) {
  }
 
 token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-tokenString,err := token.SignedString(secret)
+tokenString,err := token.SignedString([]byte(secret))
 if err != nil{
 	return "", err
 }
@@ -42,7 +42,7 @@ return tokenString, nil
 func VerifyJWT(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v\n", t.Header["alg"])
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
 		}
 		return []byte(secret), nil
 	})
