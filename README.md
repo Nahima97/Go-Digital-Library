@@ -1,57 +1,51 @@
-# Welcome to Go Digital's Digital Library!
+# 📚 Go Digital Library
 
-# How to Navigate The Digital Library
-
-KEY:
-
-API Endpoints
-Method	   Endpoint	    Description
-POST	   /register	Register a user
-POST	   /login	    Authenticate + get JWT Token
-
-Books (protected routes)
-Method	     Endpoint	             Description
-POST	     /books	                 Add a new book
-GET	         /books/borrow/{id}	     Borrow a book by ID
-PUT	         /books/return/{id}	     Return a book
-DELETE	     /books/delete/{id}	     Delete a book
+A backend service for managing a digital library system, built with **Go**, **Gorilla Mux**, and **GORM**.  
+It provides RESTful APIs for user authentication, book management, and loan tracking.
 
 
-
-# Deployment Instructions
-User Routes:
-In order to Register a user please follow the below link:
-http/localhost:8080/register
-
-For user login follow this link: 
-http/localhost:8080/login
-
-Book Routes:
-TO Search for books within the library follow this:
-http/localhost:8080/books
-
-To Add a book follow the below:
-http/localhost:8080/books/add
-
-To Borrow a book follow the below:
-http/localhost:8080/books/borrow/{id}
-
-To Return a book follow the below:
-http/localhost:8080/books/return/{id}
-
-To Delete a book follow the below:
-http/localhost:8080/books/delete/{id}
+## 🚀 Features
+- JWT‑based authentication middleware
+- Role‑based access control (`admin` vs `user`)
+- Borrow and return book flows with loan history
+- Soft delete (archive) books using `is_active` flag
+- Search books by title, author, and genre
+- PostgreSQL integration with GORM ORM
+- Service + Repository architecture for clean separation of concerns
 
 
-# Thank you Oreva
-To Oreva:
-From all of us, Thank you for guiding us through the world of Go. What felt daunting at first quickly became more manageable, thanks to your support.
+## 🛠️ Tech Stack
+- **Language:** Go 
+- **Frameworks:** Gorilla Mux (routing), GORM (ORM)
+- **Database:** PostgreSQL
+- **Auth:** JWT (JSON Web Tokens)
+- **Architecture:** Handlers → Services → Repository → Database
 
-You turned our panic() into fmt.Println("I got this!")
-and transformed our "nil" knowledge into real skills.
 
-We couldn’t have asked for a better teacher —
-we appreciate you more than a perfectly bug-free assignment! 😄
+## 📂 Project Structure
 
-- From Team Go Digital - 
+/handlers      → HTTP handlers (API endpoints)  
+/services      → Business logic (borrow/return flows)  
+/repository    → Database queries with GORM  
+/models        → Data models (Book, User, Loan)  
+/middleware    → JWT authentication middleware  
+/db            → Database connection setup  
+main.go        → Application entrypoint   
+
+
+## 🔑 API Endpoints
+
+### Auth
+- `POST /login` → Authenticate user, return JWT
+
+### Books
+- `GET /books` → List active books (filters: title, author, genre)
+- `GET /books/user` → Get details of a user’s borrowed books
+- `POST /books/{id}/borrow` → Borrow a book
+- `POST /books/{id}/return` → Return a book
+- `PATCH /books/{id}/archive` → Archive a book (admin only)
+
+---
+
+From Team Go Digital 
 
