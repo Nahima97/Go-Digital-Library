@@ -5,6 +5,7 @@ import (
 	"library/models"
 	"library/services"
 	"net/http"
+	"strings"
 )
 
 type UserHandler struct {
@@ -12,7 +13,6 @@ type UserHandler struct {
 }
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
-	//the collection of request details
 	var signUp models.User
 	err := json.NewDecoder(r.Body).Decode(&signUp)
 	if err != nil {
@@ -20,31 +20,36 @@ func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	role := strings.ToLower(signUp.Role)
 
-	//calling the service layer
+	if role == "" {
+		role = "user"
+	}
+
+	if role != "admin" && role != "user" {
+		http.Error(w, "role must be 'admin' or 'user'", http.StatusBadRequest)
+		return 
+	}
+
 	err = h.Service.RegisterUser(&signUp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-
-	//response
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(signUp)
-
-
+	w.Write([]byte("registered successfully"))
 }
 
 func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
-	var req models.User
-	err := json.NewDecoder(r.Body).Decode(&req)
+	var login models.User
+	err := json.NewDecoder(r.Body).Decode(&login)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	token, err := h.Service.Login(&req)
+	token, err := h.Service.Login(&login)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -52,5 +57,4 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(token)
-
 }
