@@ -24,10 +24,10 @@ func SetupRouter(userHandler *handlers.UserHandler, bookHandler *handlers.BookHa
 
 	protected.HandleFunc("/add", bookHandler.AddBook).Methods("POST")
 	protected.HandleFunc("/books/user", bookHandler.GetBooksByUserID).Methods("GET") 
-	protected.HandleFunc("/books/borrow/{id}", bookHandler.BorrowBook).Methods("GET")
-	protected.HandleFunc("/books/return/{id}", bookHandler.ReturnBook).Methods("PUT")
-	protected.HandleFunc("/books/update/{id}", bookHandler.UpdateBook).Methods("PATCH")
-	protected.HandleFunc("/books/archive/{id}", bookHandler.ArchiveBook).Methods("PATCH")
+	protected.HandleFunc("/books/{id}/borrow", bookHandler.BorrowBook).Methods("GET")
+	protected.HandleFunc("/books/{id}/return", bookHandler.ReturnBook).Methods("PUT")
+	protected.HandleFunc("/books/{id}/update", bookHandler.UpdateBook).Methods("PATCH")
+	protected.HandleFunc("/books/{id}/archive", bookHandler.ArchiveBook).Methods("PATCH")
 
 	return r
 }
